@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CellsApp</string>
+    <string name="screen_title_home_screen">Клеточное наполнение</string>
+</resources>
