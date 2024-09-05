@@ -29,16 +29,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.example.cellsapp.R
 import com.example.cellsapp.presentation.elements.CellCard
-import com.example.cellsapp.presentation.elements.CellCardText
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavController,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = hiltViewModel<HomeViewModel>()
@@ -49,41 +46,54 @@ fun HomeScreen(
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(Color(0xFF310050)),
                     modifier = Modifier.background(Color(0xFF310050)),
-                    title = { Text(text = stringResource(id = R.string.screen_title_home_screen), color = Color.White) }
+                    title = {
+                        Text(
+                            text = stringResource(id = R.string.screen_title_home_screen),
+                            color = Color.White
+                        )
+                    }
                 )
             }
         ) {
-             Column(
-                 verticalArrangement = Arrangement.SpaceBetween,
-                 horizontalAlignment = Alignment.CenterHorizontally,
-                 modifier = Modifier
-                     .padding(it)
-                     .fillMaxSize()
-                     .background(
-                         brush = Brush.verticalGradient(
-                             colors = listOf(
-                                 Color(0xFF310050),
-                                 Color(0xFF000000)
-                             )
-                         )
-                     )
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFF310050),
+                                Color(0xFF000000)
+                            )
+                        )
+                    )
             ) {
-                 LazyColumn(contentPadding = PaddingValues(horizontal = 16.dp), modifier = Modifier.weight(1f, false), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    uiState.cellList.forEach {
-                        cell ->item { CellCard(cell) }
+                LazyColumn(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    modifier = Modifier.weight(1f, false),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    uiState.cellList.forEach { cell ->
+                        item { CellCard(cell) }
                     }
-                 }
+                }
 
-                 Button(
-                     onClick = { viewModel.send(AddCellEvent()) },
-                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5A3472)),
-                     shape = RoundedCornerShape(4.dp),
-                     modifier = Modifier.padding(16.dp)
-                 ) {
-                     Text(text = "Сотворить",
-                         Modifier
-                             .fillMaxWidth(), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleLarge )
-                 }
+                Button(
+                    onClick = { viewModel.send(AddCellEvent()) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5A3472)),
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = "Сотворить",
+                        Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
             }
         }
     }

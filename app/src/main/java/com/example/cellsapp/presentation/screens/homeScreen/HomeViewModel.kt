@@ -16,16 +16,11 @@ import kotlin.random.Random
 @HiltViewModel
 class HomeViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _HomeUIState = MutableStateFlow(HomeUIState())
+    private val _homeUIState = MutableStateFlow(HomeUIState())
 
-    val homeState: StateFlow<HomeUIState> = _HomeUIState.asStateFlow()
+    val homeState: StateFlow<HomeUIState> = _homeUIState.asStateFlow()
 
-    var lastAliveIndex = -1;
-
-    init {
-
-
-    }
+    private var lastAliveIndex = -1
 
     fun send(event: HomeEvent) {
         when (event) {
@@ -39,26 +34,26 @@ class HomeViewModel @Inject constructor(
         Log.d("AAA", "Cell Added")
         val cells = homeState.value.cellList.toMutableList()
         if (Random.nextInt(0, 10) >= 5)
-            cells.add(Cell(true, "Да не умер он"));
+            cells.add(Cell(true, "Да не умер он"))
         else cells.add(Cell(false, "Все-таки умер"))
         val len = cells.size
-        if(len >=3){
-            if(cells[len-1] is Cell && cells[len-2] is Cell && cells[len-3] is Cell)
-            {
-                if (cells[len-1].isAlive && cells[len-2].isAlive && cells[len-3].isAlive){
+        if (len >= 3) {
+            if (cells[len - 1] is Cell && cells[len - 2] is Cell && cells[len - 3] is Cell) {
+                if (cells[len - 1].isAlive && cells[len - 2].isAlive && cells[len - 3].isAlive) {
                     cells.add(Life(true, "Оно живое!"))
                     lastAliveIndex = len
-                }
-                else if (!cells[len-1].isAlive && !cells[len-2].isAlive && !cells[len-3].isAlive && lastAliveIndex > 0){
-                    cells[lastAliveIndex] = Life(false, "Она погибла")
-                    lastAliveIndex = -1
+                } else if (!cells[len - 1].isAlive && !cells[len - 2].isAlive && !cells[len - 3].isAlive && lastAliveIndex > 0) {
+                    cells.removeAt(lastAliveIndex)
+                    lastAliveIndex = cells.indexOfLast { it is Life && it.isAlive }
+                    // Версия для замены на погибшую версию
+//                    cells[lastAliveIndex] = Life(false, "Она погибла")
+//                    lastAliveIndex = -1
                 }
 
             }
         }
 
-        _HomeUIState.update {
-                homeState: HomeUIState ->
+        _homeUIState.update { homeState: HomeUIState ->
             homeState.copy(cellList = cells.toImmutableList())
         }
     }

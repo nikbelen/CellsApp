@@ -77,7 +77,7 @@ fun CellCard(
                     .clip(CircleShape)
 
             )
-            Column() {
+            Column {
                 Text(
                     text = text.capitaliseFirst(),
                     style = MaterialTheme.typography.titleLarge,
@@ -121,7 +121,7 @@ fun CellCardText(
                     .clip(CircleShape)
 
             )
-            Column() {
+            Column {
                 Text(
                     text = text.capitaliseFirst(),
                     style = MaterialTheme.typography.titleLarge,
